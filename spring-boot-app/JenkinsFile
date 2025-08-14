@@ -14,6 +14,37 @@ pipeline {
       }
     }
 
+    stage('SAST with Semgrep') {
+      
+      agent any
+      
+      steps {
+        
+        sh '''docker pull semgrep/semgrep && docker run --rm -v "${PWD}/spring-boot-app:/src" semgrep/semgrep semgrep scan --config=auto --text --text-output="SAST_reports/semgrep.txt"'''
+        
+        input 'Do you accept SAST results?'
+        echo 'Proceed further...'
+      }
+    }
+
+    stage('SCA with OWASP Dependency Check') {
+      
+      agent {
+        docker {
+        image 'abhishekf5/maven-abhishek-docker-agent:v1'
+        args '--user root -v /var/run/docker.sock:/var/run/docker.sock' // mount Docker socket to access the host's Docker daemon
+        }
+      }
+      
+      steps {
+        
+         sh '''cd spring-boot-app && mvn org.owasp:dependency-check-maven:check -Dodc.outputDirectory="SCA_reports" -DnvdApiKey="a25e547d-80fc-4b51-b80a-fb02479d502b"'''
+        
+        input 'Do you accept SCA results?'
+        echo 'Proceed further...'
+      }
+    }
+
     stage('Build Application') {
       agent {
         docker {
