@@ -29,11 +29,11 @@ c. Add the "Docker Pipeline" plugin
 d. Create Pipeline:  
 - Select "New Item" - "`Pipeline`"
 - Set "Name" ("`Demo`" or something)
-- Set "GitHub project" with an URL to the project (like "https://github.com/trainer04/DevSecOps-demo01.git")
+- Set "GitHub project" with an URL to the project (like "https://github.com/trainer04/DevSecOps-demo01-secured.git")
 - Set "Definition" with "`Pipeline script from SCM`"
 - Set "SCM" as "`Git`"
-- Set "Repository URL" with your URL (like "https://github.com/trainer04/DevSecOps-demo01.git")
+- Set "Repository URL" with your URL (like "https://github.com/trainer04/DevSecOps-demo01-secured.git")
 - Set credentials if necessary (for private repos)
 - Set "Branch Specifier" as "`*/main`"
 - Set "Script Path" with the path to the Jenkins file (like "`spring-boot-app/JenkinsFile`")
-- Save the item
+- Save the pipeline
