@@ -1,0 +1,54 @@
+pipeline {
+  agent none
+  
+  stages {
+  
+    stage('Checkout') {
+      
+      agent any
+      
+      steps {
+        
+        sh 'echo passed'
+        //git branch: 'main', url: ''
+      }
+    }
+
+    stage('Build Application') {
+      agent {
+        docker {
+        image 'abhishekf5/maven-abhishek-docker-agent:v1'
+        args '--user root -v /var/run/docker.sock:/var/run/docker.sock' // mount Docker socket to access the host's Docker daemon
+        }
+      }
+      
+      steps {
+        
+        sh 'ls -ltr'
+        // build the project and create a JAR file
+        sh 'cd spring-boot-app && mvn clean package'
+      }
+    }
+
+    stage('Build and Push Docker Image') {
+      environment {
+        DOCKER_IMAGE = "imaged3-cicd:${BUILD_NUMBER}"
+        // DOCKERFILE_LOCATION = "spring-boot-app/Dockerfile"
+        // REGISTRY_CREDENTIALS = credentials('docker-cred')
+      }
+      
+      agent any
+      
+      steps {
+        
+        script {
+            sh 'cd spring-boot-app && docker build -t ${DOCKER_IMAGE} .'
+            def dockerImage = docker.image("${DOCKER_IMAGE}")
+            docker.withRegistry("http://localhost:5000") {
+                dockerImage.push()
+            }
+        }
+      }
+    }
+  }
+}
