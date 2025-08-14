@@ -1,4 +1,4 @@
-# DevSecOps-demo01
+# DevSecOps-demo01-secured
 
 ## For Linux:
 
