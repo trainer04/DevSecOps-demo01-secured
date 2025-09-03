@@ -37,7 +37,7 @@ pipeline {
       }
       
       steps {
-        //if you want to get API key, visit https://nvd.nist.gov/developers/request-an-api-key. Then substitute the example below with your own key
+        //if you want to get API key, visit https://nvd.nist.gov/developers/request-an-api-key. Then replace the example below with your own key
         //sh '''cd spring-boot-app && mvn org.owasp:dependency-check-maven:check -Dodc.outputDirectory="SCA_reports" -DnvdApiKey="a26e547d-80fc-4c51-b80a-fb02489d502b"'''
         
         sh '''cd spring-boot-app && mvn org.owasp:dependency-check-maven:check -Dodc.outputDirectory="SCA_reports"'''
